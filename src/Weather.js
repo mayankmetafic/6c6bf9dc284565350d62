@@ -11,6 +11,7 @@ import {
   Thumbnail,
 } from 'native-base';
 import {API_KEY} from '@env';
+import styles from './styles';
 
 const Weather = ({navigation, route}) => {
   const [weather, setWeather] = useState(null);
@@ -19,7 +20,8 @@ const Weather = ({navigation, route}) => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        setWeather(data);
+        console.log(data);
+        setWeather(data.current);
       });
   };
 
@@ -28,11 +30,13 @@ const Weather = ({navigation, route}) => {
   }, []);
 
   if (!weather) {
-    <Container>
-      <Content>
-        <Spinner />
-      </Content>
-    </Container>;
+    return (
+      <Container>
+        <Content>
+          <Spinner />
+        </Content>
+      </Container>
+    );
   }
 
   return (
@@ -40,10 +44,23 @@ const Weather = ({navigation, route}) => {
       <Content>
         <List>
           <ListItem>
-            <Text>{weather.temperature}</Text>
-            {weather.weather_icons.map((icon, index) => (
-              <Thumbnail source={{uri: icon}} height={100} width={100} />
-            ))}
+            <Text>{weather?.temperature}</Text>
+            <Content>
+              {weather.weather_icons.map((icon, index) => (
+                <Thumbnail
+                  style={styles.icon}
+                  source={{uri: icon}}
+                  height={100}
+                  width={100}
+                />
+              ))}
+            </Content>
+          </ListItem>
+          <ListItem>
+            <Text>Wind Speed: {weather.wind_speed}</Text>
+          </ListItem>
+          <ListItem>
+            <Text>Precipitation: {weather.precip}</Text>
           </ListItem>
         </List>
       </Content>

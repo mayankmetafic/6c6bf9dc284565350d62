@@ -11,6 +11,7 @@ import {
 } from 'native-base';
 import {SvgCssUri} from 'react-native-svg';
 import {Dimensions} from 'react-native';
+import styles from './styles';
 
 const Country = ({navigation, route}) => {
   const {data} = route.params;
@@ -18,7 +19,9 @@ const Country = ({navigation, route}) => {
   if (!data) {
     return (
       <Container>
-        <Content><Text>Oops! couldn't find that country. Please try again.</Text></Content>
+        <Content>
+          <Text>Oops! couldn't find that country. Please try again.</Text>
+        </Content>
       </Container>
     );
   }
@@ -26,7 +29,7 @@ const Country = ({navigation, route}) => {
     <Container>
       <Header />
       <Content>
-        <Text>About {data.name}</Text>
+        <Text style={styles.center}>About {data.name}</Text>
         <List>
           <ListItem>
             <Text>Capital: {data.capital}</Text>
@@ -40,13 +43,15 @@ const Country = ({navigation, route}) => {
           <ListItem>
             <SvgCssUri
               uri={data.flag}
-              height={400}
-              width={Dimensions.get('window').width}
-              scale={0.2}
+              height={300}
+              width={Dimensions.get('window').width - 60}
+              preserveAspectRatio="xMidyMid meet"
+              scale={0.5}
             />
           </ListItem>
         </List>
         <Button
+          style={styles.center}
           onPress={() => {
             navigation.navigate('Weather', {capital: data.capital});
           }}>
